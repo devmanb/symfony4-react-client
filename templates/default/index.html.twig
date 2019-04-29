@@ -6,30 +6,6 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Météo by Dimitrie</a>
     </nav>
-    {{ ip }}
-    <script>
-        x = navigator.geolocation;
-        x.getCurrentPosition(success,failure);
-        function success(pos)
-        {
-            var mylat = pos.coords.latitude;
-            var mylong = pos.coords.longitude;
-            console.log(mylat,mylong)
-           // window.fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${mylat}&lon=${mylong}&lang=fr&units=metric&appid=1e4bb6b0352cb974596a6d35327b606e`)
-            window.fetch(`http://127.0.0.1:8000/user/localisation?lat=${mylat}&lon=${mylong}`)
-            .then(res => res.json(res))
-            .then(resJSON =>
-            {
-                console.log(JSON.parse(resJSON.contents).name);
-                console.log(JSON.parse(resJSON.contents).main.temp+" C°");
-            })
-            
-        }
-        function failure()
-        {
-
-        }
-    </script>
     <style>
     .app_
     {

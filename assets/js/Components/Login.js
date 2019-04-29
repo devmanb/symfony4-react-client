@@ -22,21 +22,19 @@ class Login extends React.Component
     submitForm(e)
     {
         e.preventDefault();
-        // superagent.post('http://127.0.0.1:8000/user/inscription')
-        // //.set('Access-Control-Allow-Credentials', 'true')
-        // .set('Content-Type', 'application/json')
-        // // .set('credentials', 'include')
-        // .withCredentials()
-        // .send({"_username":this.state._username,"_password":this.state._password})
-        // .end((err,res) => {
+        superagent.post('http://127.0.0.1:8000/api/login_check')
+        //.set('Access-Control-Allow-Credentials', 'true')
+        .set('Content-Type', 'application/json')
+        // .set('credentials', 'include')
+        .withCredentials()
+        .send({"username":this.state._username,"password":this.state._password})
+        .end((err,res) => {
 
-        //     if(err){ this.setState({errorMsg:"Erreur de l'E-mail ou du Mots de passe"}); return;}
-        //     console.log('res.body',res.body)
-        // })
-        localStorage.setItem('token','test1111111111111111111111111111111111111111111111111')
-      //  window.location.reload()
-        //this.setState({auth:true});
-        this.props.history.push('page_perso');
+            if(err){ this.setState({errorMsg:"Erreur de l'E-mail ou du Mots de passe"}); return;}
+            localStorage.setItem('token',res.body);
+            this.setState({ auth: true });
+            this.props.history.push('page_perso')
+        })
     }
     isAuth()
     {

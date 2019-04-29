@@ -44,13 +44,12 @@ class Page_perso extends React.Component {
         x.getCurrentPosition(this.success.bind(this), this.failure.bind(this));
     }
     render() {
-        const isAlreadyAuth = this.isAuth();
         return (
                 <div>
                 <button onClick={this.logout.bind(this)}>Se Deconnecter</button>
                 <br/>
                 <div>Bienvenu <b>{this.state.username}</b></div>
-                <div>Vous êtes <b>{ this.state.ville }</b></div>
+                <div>Vous êtes à <b>{ this.state.ville }</b></div>
                     <div>La Température <b>{ this.state.temperature }</b></div>
                 </div>
             )
