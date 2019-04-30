@@ -8,7 +8,8 @@ class Login extends React.Component
         this.state = {
            _username:"",
            _password:"",
-           auth:false
+           auth:false,
+            errorMsg:""
         };
     }
     handlerUsernameChanged(e)
@@ -30,8 +31,16 @@ class Login extends React.Component
         .send({"username":this.state._username,"password":this.state._password})
         .end((err,res) => {
 
-            if(err){ this.setState({errorMsg:"Erreur de l'E-mail ou du Mots de passe"}); return;}
-            localStorage.setItem('token',res.body);
+            if(err)
+            { 
+                this.setState({errorMsg:"Erreur de l'E-mail ou du Mots de passe"}); 
+                console.log(this.state.errorMsg)
+                return;
+            }
+            this.setState({ errorMsg:""});
+            console.log(res.body.token) 
+            localStorage.setItem('token', res.body.token);
+            localStorage.setItem('email', this.state._username);
             this.setState({ auth: true });
             this.props.history.push('page_perso')
         })
@@ -49,6 +58,7 @@ class Login extends React.Component
                 {isAlreadyAuth ? <Redirect push to={{ pathname:'/page_perso'}}/>:
             (
             <form onSubmit={this.submitForm.bind(this)}>
+                <div style={ this.state.errorMsg == ""?{display:'none'}:{display:'block',color:'red',textAlign:'center'}}>Erreur Authentification</div>
                 <label>E-mail</label><br/>
                 <input type="email" value={this.state._username} onChange={this.handlerUsernameChanged.bind(this)}/><br/>
                 <label>Mots de passe</label><br/>

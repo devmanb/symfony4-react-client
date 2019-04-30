@@ -10,7 +10,8 @@ class Page_perso extends React.Component {
             username: "xxxx",
             temperature: "xxxx",
             ville: "xxxx",
-            auth:true
+            auth:true,
+            errorMsg:""
         };
     }
 
@@ -25,14 +26,29 @@ class Page_perso extends React.Component {
         return this.auth&&token && token.length > 10;
     }
     success(pos) {
-    var mylat = pos.coords.latitude;
-    var mylong = pos.coords.longitude;
-    console.log(mylat, mylong)
-    // window.fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${mylat}&lon=${mylong}&lang=fr&units=metric&appid=1e4bb6b0352cb974596a6d35327b606e`)
-    window.fetch(`http://127.0.0.1:8000/user/localisation?lat=${mylat}&lon=${mylong}`)
-        .then(res => res.json(res))
-        .then(resJSON => {
-            this.setState({ ville: JSON.parse(resJSON.contents).name, temperature: JSON.parse(resJSON.contents).main.temp + " C°" });
+        var mylat = pos.coords.latitude;
+        var mylong = pos.coords.longitude;
+        superagent.get('http://127.0.0.1:8000/user/localisation')
+        .set('Authorization', 'BEARER ' + localStorage.getItem('token'))
+        //.set('authorization',localStorage.getItem('token'))
+        .set('Content-Type', 'application/json')
+        //.set('accept', 'application/json')
+        // .set('credentials', 'include')
+        .withCredentials()
+        .query({ "mylat": mylat, "mylong": mylong })
+        .end((err, res) => {
+
+            if (err) {
+                this.setState({ errorMsg: "erreur" });
+                console.log(this.state.errorMsg)
+                localStorage.setItem('token','');
+                this.props.history.push('')
+                return;
+            }else{
+                this.setState({ ville: JSON.parse(JSON.parse(res.text).contents).name, temperature: JSON.parse(JSON.parse(res.text).contents).main.temp + " C°" });
+                this.setState({ errorMsg: "" });
+                this.setState({ username: localStorage.getItem('email').split('@')[0] });
+            }
         })
 
     }
