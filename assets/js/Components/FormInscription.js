@@ -17,7 +17,7 @@ class FormInscription extends React.Component {
     }
     submitForm(e) {
         e.preventDefault();
-        superagent.post('http://127.0.0.1:8000/api/login_check')
+        superagent.post('http://127.0.0.1:8000/user/inscription')
             //.set('Access-Control-Allow-Credentials', 'true')
             .set('Content-Type', 'application/json')
             // .set('credentials', 'include')
@@ -29,7 +29,12 @@ class FormInscription extends React.Component {
                 console.log('res.body', res.body)
             })
     }
+    isAuth() {
+        const token = localStorage.getItem('token');
+        return token && token.length > 10;
+    }
     render() {
+        const isAlreadyAuth = this.isAuth();
         return (
             <div>
                 {isAlreadyAuth ? <Redirect push to={{ pathname: '/page_perso' }} /> :

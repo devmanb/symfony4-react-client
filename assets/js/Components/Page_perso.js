@@ -28,6 +28,7 @@ class Page_perso extends React.Component {
     success(pos) {
         var mylat = pos.coords.latitude;
         var mylong = pos.coords.longitude;
+        console.log(mylat,mylong)
         superagent.get('http://127.0.0.1:8000/user/localisation')
         .set('Authorization', 'BEARER ' + localStorage.getItem('token'))
         //.set('authorization',localStorage.getItem('token'))
