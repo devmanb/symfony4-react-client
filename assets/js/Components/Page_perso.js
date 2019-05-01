@@ -41,7 +41,7 @@ class Page_perso extends React.Component {
         .query({ "mylat": mylat, "mylong": mylong })
         .end((err, res) => {
 
-            if (err) {
+            if (err.status != 200) {
                 this.setState({ errorMsg: "erreur" });
                 console.log(this.state.errorMsg)
                 localStorage.setItem('token','');

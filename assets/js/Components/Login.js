@@ -31,7 +31,7 @@ class Login extends React.Component
         .send({"username":this.state._username,"password":this.state._password})
         .end((err,res) => {
 
-            if(err)
+            if(err.status !=200)
             { 
                 this.setState({errorMsg:"Erreur de l'E-mail ou du Mots de passe"}); 
                 console.log(this.state.errorMsg)
