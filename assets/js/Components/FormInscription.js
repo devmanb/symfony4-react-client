@@ -25,7 +25,7 @@ class FormInscription extends React.Component {
             .send({ "_username": this.state._username, "_password": this.state._password })
             .end((err, res) => {
 
-                if (err) { this.setState({ errorMsg: "Erreur de l'E-mail ou du Mots de passe" }); return; }
+                if (err) { this.setState({ errorMsg: "Erreur sur l'inscription soit votre email exist déjà !" }); return; }
                 console.log('res.body', res.body)
             })
     }
@@ -40,6 +40,8 @@ class FormInscription extends React.Component {
                 {isAlreadyAuth ? <Redirect push to={{ pathname: '/page_perso' }} /> :
                 (
                         <form onSubmit={this.submitForm.bind(this)}>
+                            <div style={this.state.errorMsg == "" ? { display: 'none' } : { display: 'block', color: 'red', textAlign: 'center' }}>Erreur Authentification</div>
+                            <div style={this.state.errorMsg == "" ? { display: 'block' } : { display: 'none', color: 'green', textAlign: 'center' }}>vous êtes inscrit veuiller vous redirigez <button onClick={() => { this.props.history.push('inscription') }}>ici</button></div>
                             <label>E-mail</label><br />
                             <input type="email" value={this.state._username} onChange={this.handlerUsernameChanged.bind(this)} /><br />
                             <label>Mots de passe</label><br />

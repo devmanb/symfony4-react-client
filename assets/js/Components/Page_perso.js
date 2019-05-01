@@ -11,7 +11,9 @@ class Page_perso extends React.Component {
             temperature: "xxxx",
             ville: "xxxx",
             auth:true,
-            errorMsg:""
+            errorMsg:"",
+            description:"",
+            url:""
         };
     }
 
@@ -46,7 +48,8 @@ class Page_perso extends React.Component {
                 this.props.history.push('')
                 return;
             }else{
-                this.setState({ ville: JSON.parse(JSON.parse(res.text).contents).name, temperature: JSON.parse(JSON.parse(res.text).contents).main.temp + " C°" });
+                console.log(JSON.parse(res.text).contents)
+                this.setState({ ville: JSON.parse(JSON.parse(res.text).contents).name, temperature: JSON.parse(JSON.parse(res.text).contents).main.temp + " C°", description: JSON.parse(JSON.parse(res.text).contents).weather[0].description, url: "http://openweathermap.org/img/w/" + JSON.parse(JSON.parse(res.text).contents).weather[0].icon+".png"});
                 this.setState({ errorMsg: "" });
                 this.setState({ username: localStorage.getItem('email').split('@')[0] });
             }
@@ -67,7 +70,9 @@ class Page_perso extends React.Component {
                 <br/>
                 <div>Bienvenu <b>{this.state.username}</b></div>
                 <div>Vous êtes à <b>{ this.state.ville }</b></div>
-                    <div>La Température <b>{ this.state.temperature }</b></div>
+                <div style={{marginLeft:'100px'}}><img width="120px" src={this.state.url}/></div>
+                <div>La Température <b>{ this.state.temperature }</b></div>
+                <div>Il est {this.state.description}</div>
                 </div>
             )
     }
